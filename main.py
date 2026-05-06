@@ -1,5 +1,6 @@
 import os
 import uuid
+import json
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,6 +17,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+templates.env.filters["tojson"] = json.dumps
 
 _oauth_states: dict[str, str] = {}
 
