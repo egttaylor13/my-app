@@ -8,4 +8,4 @@ services:
       - key: PYTHON_VERSION
         value: "3.11"
       - key: APP_URL
-        value: "https://dads-book-keeping.onrender.com"
+        value: "https://dads-book-keeping-2.onrender.com"
