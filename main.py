@@ -90,7 +90,9 @@ def auth_gmail():
 
 
 @app.get("/auth/gmail/callback")
-def auth_gmail_callback(code: str, state: str = "", db: Session = Depends(get_db)):
+def auth_gmail_callback(code: str = "", state: str = "", db: Session = Depends(get_db)):
+    if not code:
+        return HTMLResponse("<html><body><h2>Gmail OAuth Callback</h2><p>This URL is used by the Dadsbooks app to complete Gmail sign-in. <a href='/'>Go to dashboard</a></p></body></html>")
     if state not in _oauth_states:
         return JSONResponse({"error": "Invalid OAuth state"}, status_code=400)
     _oauth_states.pop(state)
@@ -126,8 +128,10 @@ def auth_quickbooks():
 
 @app.get("/auth/quickbooks/callback")
 def auth_quickbooks_callback(
-    code: str, realmId: str, state: str = "", db: Session = Depends(get_db)
+    code: str = "", realmId: str = "", state: str = "", db: Session = Depends(get_db)
 ):
+    if not code:
+        return HTMLResponse("<html><body><h2>QuickBooks OAuth Callback</h2><p>This URL is used by the Dadsbooks app to complete QuickBooks sign-in. <a href='/'>Go to dashboard</a></p></body></html>")
     if state and state not in _oauth_states:
         return JSONResponse({"error": "Invalid OAuth state"}, status_code=400)
     if state:
