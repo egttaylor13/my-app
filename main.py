@@ -121,8 +121,7 @@ def auth_quickbooks():
         return JSONResponse({"error": "QuickBooks credentials not configured"}, status_code=503)
     state = str(uuid.uuid4())
     _oauth_states[state] = "quickbooks"
-    auth_client = quickbooks_service.get_auth_client()
-    auth_url = quickbooks_service.get_auth_url(auth_client, state)
+    auth_url = quickbooks_service.get_auth_url(state)
     return RedirectResponse(auth_url)
 
 
@@ -137,8 +136,7 @@ def auth_quickbooks_callback(
     if state:
         _oauth_states.pop(state)
 
-    auth_client = quickbooks_service.get_auth_client()
-    tokens = quickbooks_service.exchange_code(auth_client, code, realmId)
+    tokens = quickbooks_service.exchange_code(code, realmId)
 
     token = db.query(OAuthToken).filter_by(service="quickbooks").first()
     if not token:
